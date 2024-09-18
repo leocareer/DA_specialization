@@ -3,17 +3,18 @@
 
 -- List of countries that are shopping
 SELECT DISTINCT country 
-FROM transactions.company;
+FROM transactions.company
+ORDER BY country;
 
 -- From how many countries the purchases are made
 SELECT count(DISTINCT country) 
 FROM transactions.company;
 
 -- Identify the company with the highest average sales (solution with 'limit')
-SELECT company_name, AVG(amount) FROM transactions.transaction AS tran
-JOIN transactions.company AS com ON com.id = tran.company_id
-GROUP BY tran.company_id
-ORDER BY AVG(amount) DESC
+SELECT company_name, AVG(amount) AS avg_amount FROM transactions.transaction AS t1
+JOIN transactions.company AS t2 ON t2.id = t1.company_id
+GROUP BY t1.company_id
+ORDER BY avg_amount DESC
 LIMIT 1;
 
 -- Identify the company with the highest average sales (solution without 'limit')
@@ -91,12 +92,44 @@ ORDER BY date_timestamp;
 
 -- Level 2 Exercise 2
 -- What is the average sales per country? It presents the results sorted from highest to lowest average.
+SELECT AVG(amount) AS country_amount, country
+FROM transactions.company AS t1
+JOIN transactions.transaction AS t2
+ON t1.id = t2.company_id
+GROUP BY country
+ORDER BY country_amount;
 
 -- Level 2 Exercise 3
 -- In your company, a new project is being considered to launch some advertising campaigns to compete with the "Non Institute" company. 
 -- For this, they ask you for the list of all transactions carried out by companies that are located in the same country as this company.
 -- Display the list by applying JOIN and subqueries.
 -- Display the listing by applying only subqueries.
+
+-- with join 
+SELECT DISTINCT company_name
+FROM transactions.transaction AS t1
+JOIN transactions.company AS t2
+ON t2.id = t1.company_id
+WHERE country = (
+	SELECT country FROM transactions.company
+    WHERE company_name LIKE 'Non Institute'
+)
+AND company_name <> 'Non Institute'
+ORDER BY company_name;
+
+-- with only subqueries
+SELECT company_name
+FROM transactions.company AS t1
+WHERE country IN (
+	SELECT country FROM transactions.company
+    WHERE company_name LIKE 'Non Institute'
+)
+AND company_name <> 'Non Institute'
+AND EXISTS (
+	SELECT company_id FROM transactions.transaction AS t2
+    WHERE t1.id = t2.company_id
+)
+ORDER BY company_name;
 
 -- Level 3 Exercise 1
 -- It presents the name, telephone, country, date and amount of those companies that made transactions with a value between 100 and 200
