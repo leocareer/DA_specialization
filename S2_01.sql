@@ -12,20 +12,21 @@ FROM transactions.company;
 
 -- Identify the company with the highest average sales (solution with 'limit')
 SELECT company_name, AVG(amount) AS avg_amount FROM transactions.transaction AS t1
-JOIN transactions.company AS t2 ON t2.id = t1.company_id
+JOIN transactions.company AS t2 
+ON t2.id = t1.company_id
 GROUP BY t1.company_id
 ORDER BY avg_amount DESC
 LIMIT 1;
 
 -- Identify the company with the highest average sales (solution without 'limit')
-SELECT t1.company_name, t2.avg_amount_t2
+SELECT company_name, avg_amount_t2
 FROM (
 	SELECT company_id, AVG(amount) AS avg_amount_t2 
     FROM transactions.transaction
     GROUP BY company_id
 ) AS t2
 JOIN company AS t1 ON t1.id = t2.company_id
-WHERE t2.avg_amount_t2 = (
+WHERE avg_amount_t2 = (
 		SELECT max(avg_amount_t3) 
         FROM (
 			SELECT AVG(amount) AS avg_amount_t3 FROM transactions.transaction
@@ -134,9 +135,25 @@ ORDER BY company_name;
 -- Level 3 Exercise 1
 -- It presents the name, telephone, country, date and amount of those companies that made transactions with a value between 100 and 200
 -- euros and on any of these dates: April 29, 2021, July 20, 2021 and March 13, 2022. Sort the results from highest to lowest amount.
+SELECT company_name, phone, country, DATE(timestamp), amount
+FROM transactions.company AS t1
+JOIN transactions.transaction AS t2
+ON t1.id = t2.company_id
+WHERE DATE(timestamp) IN ('2021-04-29','2021-07-20','2022-03-13')
+AND amount BETWEEN 100 AND 200
+ORDER BY amount;
 
 -- Level 3 Exercise 2
 -- We need to optimize the allocation of resources and it will depend on the operational capacity that is required, 
 -- so they ask you for the information about the amount of transactions that the companies carry out, but the HR department
 -- is demanding and wants a list of the companies where you specify if they have more than 4 transactions or less.
-
+SELECT company_name,
+	CASE 
+		WHEN count(t2.id) > 4 THEN '> 4 transactions'
+		ELSE '<= 4 transactions'
+	END AS transaction_count
+FROM transactions.company AS t1
+JOIN transactions.transaction AS t2
+ON t1.id = t2.company_id
+GROUP BY t1.id
+ORDER BY transaction_count DESC;
