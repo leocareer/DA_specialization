@@ -71,6 +71,24 @@ WHERE id NOT IN (
 -- Identify the five days that generated the largest amount of revenue for the company from sales. 
 -- It shows the date of each transaction along with the sales total.
 
+-- with 'limit'
+SELECT sum(amount), DATE(timestamp)
+FROM transactions.transaction
+GROUP BY DATE(timestamp)
+ORDER BY sum(amount) DESC
+LIMIT 5;
+
+-- with window function
+SELECT sum_amount, date_timestamp
+FROM (
+	SELECT sum(amount) AS sum_amount, DATE(timestamp) AS date_timestamp,
+	ROW_NUMBER() OVER(ORDER BY sum(amount) DESC) AS ind_amount
+    FROM transactions.transaction
+    GROUP BY date_timestamp
+) AS t
+WHERE ind_amount <= 5
+ORDER BY date_timestamp;
+
 -- Level 2 Exercise 2
 -- What is the average sales per country? It presents the results sorted from highest to lowest average.
 
