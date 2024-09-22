@@ -5,6 +5,36 @@ relationship with the other two tables ("transaction" and "company"). After crea
 you will need to enter the information from the document called "data_introduir_credit". 
 Remember to show the diagram and make a brief description of it. */
 
+SELECT *
+FROM information_schema.statistics
+WHERE TABLE_SCHEMA = 'transactions';
+
+CREATE INDEX idx_credit_card_id ON transaction(credit_card_id);
+
+SHOW INDEX FROM transaction;
+
+CREATE TABLE credit_card (
+    id VARCHAR(10) NOT NULL,
+    iban VARCHAR(34) NOT NULL,
+    pan VARBINARY(255) NOT NULL,
+    pin VARBINARY(255) NOT NULL,
+    cvv VARBINARY(255) NOT NULL,
+    expiring_date DATE NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES transaction(credit_card_id)
+);
+
+SET @encryption_key = UNHEX('5f7972d647ab04a55ea4daa7c314bdbf');
+
+SELECT 
+    id, 
+    iban, 
+    CAST(AES_DECRYPT(pan, @encryption_key) AS CHAR(16)) AS pan, 
+    CAST(AES_DECRYPT(pin, @encryption_key) AS CHAR(4)) AS pin, 
+    CAST(AES_DECRYPT(cvv, @encryption_key) AS CHAR(3)) AS cvv, 
+    expiring_date
+FROM credit_card;
+
 -- Level 1 Exercise 2
 /* The Human Resources department has identified an error in the account number of the user 
 with ID CcU-2938. The information to be displayed for this record is: R323456312213576817699999. 
