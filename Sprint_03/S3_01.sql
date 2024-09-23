@@ -5,33 +5,49 @@ relationship with the other two tables ("transaction" and "company"). After crea
 you will need to enter the information from the document called "data_introduir_credit". 
 Remember to show the diagram and make a brief description of it. */
 
+-- View all indexed columns
 SELECT *
 FROM information_schema.statistics
 WHERE TABLE_SCHEMA = 'transactions';
 
+-- Сreating an index
 CREATE INDEX idx_credit_card_id ON transaction(credit_card_id);
 
+-- Сheck that the index has been created
 SHOW INDEX FROM transaction;
 
+-- Creating a table
 CREATE TABLE credit_card (
     id VARCHAR(10) NOT NULL,
     iban VARCHAR(34) NOT NULL,
-    pan VARBINARY(255) NOT NULL,
-    pin VARBINARY(255) NOT NULL,
-    cvv VARBINARY(255) NOT NULL,
+    pan VARBINARY(128) NOT NULL,
+    pin VARBINARY(64) NOT NULL,
+    cvv VARBINARY(64) NOT NULL,
     expiring_date DATE NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES transaction(credit_card_id)
 );
 
+-- Setting up a secret key to encrypt data
 SET @encryption_key = UNHEX('5f7972d647ab04a55ea4daa7c314bdbf');
 
+-- View data to check if loading is correct
 SELECT 
     id, 
     iban, 
     CAST(AES_DECRYPT(pan, @encryption_key) AS CHAR(16)) AS pan, 
     CAST(AES_DECRYPT(pin, @encryption_key) AS CHAR(4)) AS pin, 
     CAST(AES_DECRYPT(cvv, @encryption_key) AS CHAR(3)) AS cvv, 
+    expiring_date
+FROM credit_card;
+
+-- View data to check encryption is working
+SELECT 
+    id, 
+    iban, 
+    CAST(pan AS CHAR(16)) AS pan, 
+    CAST(pin AS CHAR(4)) AS pin, 
+    CAST(cvv AS CHAR(3)) AS cvv, 
     expiring_date
 FROM credit_card;
 
