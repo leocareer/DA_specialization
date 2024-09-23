@@ -115,6 +115,27 @@ DROP COLUMN pan;
 /* Delete the record with ID 02C6201E-D90A-1859-B4EE-88D2986D3B02 from the transaction table
 in the database. */
 
+-- Viewing a record that requires deletion
+SELECT * FROM transactions.transaction
+WHERE id = '02C6201E-D90A-1859-B4EE-88D2986D3B02';
+
+-- View table information to see storage type
+SHOW TABLE STATUS LIKE 'transaction';
+
+-- Deleting a record
+START TRANSACTION;
+DELETE FROM credit_card 
+WHERE id = 'CcU-2938';
+DELETE FROM transaction
+WHERE id = '02C6201E-D90A-1859-B4EE-88D2986D3B02';
+ROLLBACK;
+COMMIT;
+
+-- View all indexed columns
+SELECT *
+FROM information_schema.statistics
+WHERE TABLE_SCHEMA = 'transactions';
+
 -- Level 2 Exercise 2
 /* The marketing department wants to have access to specific information to perform analysis and 
 effective strategies. Requested to create a view that provides key details about companies and their 
