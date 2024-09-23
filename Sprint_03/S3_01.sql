@@ -56,6 +56,19 @@ FROM credit_card;
 with ID CcU-2938. The information to be displayed for this record is: R323456312213576817699999. 
 Remember to show that the change was made. */
 
+-- Update tuple with identifier CcU-2938 and change IBAN to new one
+UPDATE credit_card
+SET iban = 'R323456312213576817699999'
+WHERE id = 'CcU-2938';
+
+-- Checking for changes
+SELECT id, iban, expiring_date,
+    CAST(AES_DECRYPT(pan, @encryption_key) AS CHAR(16)) AS pan, 
+    CAST(AES_DECRYPT(pin, @encryption_key) AS CHAR(4)) AS pin, 
+    CAST(AES_DECRYPT(cvv, @encryption_key) AS CHAR(3)) AS cvv 
+FROM credit_card
+WHERE id = 'CcU-2938';
+
 -- Level 1 Exercise 3
 /* In the "transaction" table, enter a new user with the following information: 
 Id: 108B1D1D-5B23-A76C-55EF-C568E49A99DD
