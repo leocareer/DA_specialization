@@ -80,6 +80,30 @@ longitude: -117.999
 amount: 111.11
 declined: 0	*/
 
+-- Adding a record to company with custom data
+INSERT INTO company (id, company_name, phone, email, country, website)
+VALUES (
+    'b-9999',
+    'Temp',
+    '11 11 11 11 11',
+    'temp@temp.temp',
+    'Temp',
+    'https://temp.temp'
+);
+
+-- Adding a record to the transaction with the requested data
+INSERT INTO transaction (id, credit_card_id, company_id, user_id, lat, longitude, amount, declined)
+VALUES (
+    '108B1D1D-5B23-A76C-55EF-C568E49A99DD',
+    'CcU-9999',
+    'b-9999',
+    '9999',
+    829.999,
+    -117.999,
+    111.11,
+    0
+);
+
 -- Level 1 Exercise 4
 /* From human resources you are asked to delete the "pan" column from the credit_*card table. 
 Remember to show the change made. */
