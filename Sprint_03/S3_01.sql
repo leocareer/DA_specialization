@@ -108,6 +108,9 @@ VALUES (
 /* From human resources you are asked to delete the "pan" column from the credit_*card table. 
 Remember to show the change made. */
 
+ALTER TABLE credit_card
+DROP COLUMN pan;
+
 -- Level 2 Exercise 1
 /* Delete the record with ID 02C6201E-D90A-1859-B4EE-88D2986D3B02 from the transaction table
 in the database. */
