@@ -159,6 +159,9 @@ SELECT * FROM VistaMarketing;
 /* Filter the VistaMarketing view to show only companies that have their country of 
 residence in "Germany" */
 
+SELECT * FROM VistaMarketing
+WHERE country = 'Germany';
+
 -- Level 3 Exercise 1
 /* Next week you will have another meeting with the marketing managers. A colleague on your team 
 made changes to the database, but he doesn't remember how he made them. He asks you to help him 
