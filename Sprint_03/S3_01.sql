@@ -77,7 +77,7 @@ FROM credit_card
 WHERE id = 'CcU-2938';
 
 -- Level 1 Exercise 3
-/* In the "transaction" table, enter a new user with the following information: 
+/* In the 'transaction' table, enter a new user with the following information: 
 Id: 108B1D1D-5B23-A76C-55EF-C568E49A99DD
 credit_card_id: CcU-9999
 company_id: b-9999
@@ -98,6 +98,17 @@ VALUES (
     'https://temp.temp'
 );
 
+-- Adding a record to credit_card with custom data
+INSERT INTO credit_card (id, iban, pan, pin, cvv, expiring_date)
+VALUES (
+    'CcU-9999',
+    'TEMP1111111111111111111111',
+    '11111111111111111111',
+    '1111',
+    '111',
+    '2030-12-31'
+);
+
 -- Adding a record to the transaction with the requested data
 INSERT INTO transaction (id, credit_card_id, company_id, user_id, lat, longitude, amount, declined)
 VALUES (
@@ -110,6 +121,10 @@ VALUES (
     111.11,
     0
 );
+
+-- View added entry
+SELECT * FROM transactions.transaction
+WHERE id = '108B1D1D-5B23-A76C-55EF-C568E49A99DD';
 
 -- Level 1 Exercise 4
 /* From human resources you are asked to delete the "pan" column from the credit_*card table. 
