@@ -146,8 +146,6 @@ SHOW TABLE STATUS LIKE 'transaction';
 
 -- Deleting a record
 START TRANSACTION;
-DELETE FROM credit_card 
-WHERE id = 'CcU-2938';
 DELETE FROM transaction
 WHERE id = '02C6201E-D90A-1859-B4EE-88D2986D3B02';
 ROLLBACK;
@@ -189,6 +187,33 @@ WHERE country = 'Germany';
 made changes to the database, but he doesn't remember how he made them. He asks you to help him 
 leave the commands executed to obtain the following diagram (look in repository) */
 
+-- Deleting the entry with ‘user_id’ = 9999 in the ‘transaction’ table (to correctly create a foreign key)
+DELETE FROM transaction
+WHERE user_id = '9999';
+
+-- Changing the name of the column ‘email’ to ‘personal_email’ in the table ‘user’
+ALTER TABLE user
+RENAME COLUMN email TO personal_email;
+
+-- Removing the column ‘website’ from the table ‘company’
+ALTER TABLE company
+DROP COLUMN website;
+
+-- Adding the column ‘fecha_actual’ of type DATE to the table ‘credit_card’
+ALTER TABLE credit_card
+ADD COLUMN fecha_actual DATE;
+
+-- Changing the data type for ‘expiring_date’ to VARCHAR(10)
+ALTER TABLE credit_card
+MODIFY COLUMN expiring_date VARCHAR(10);
+
+-- Increasing the memory for ‘id’ in ‘credit_card’ from (10) to (20)
+ALTER TABLE credit_card
+MODIFY COLUMN id VARCHAR(20);
+
+-- Renaming table 'user' to 'data_user'
+RENAME TABLE user TO data_user;
+
 -- Level 3 Exercise 2
 /* The company also asks you to create a view called "Technical Report" that contains 
 the following information:
@@ -200,3 +225,15 @@ the following information:
 - Be sure to include relevant information from both tables and use aliases to rename columns as needed;
 Display the results of the view, sort the results in descending order based on
 the transaction ID variable. */
+
+
+
+
+
+
+
+
+
+
+
+
