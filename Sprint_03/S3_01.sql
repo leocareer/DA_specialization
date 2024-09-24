@@ -143,6 +143,18 @@ transactions. You will need to create a view called VistaMarketing that contains
 information: Company name. Contact phone number. Country of residence Average purchase made by each
 company. Presents the created view, sorting the data from highest to lowest purchase average. */
 
+-- Сreating a view
+CREATE VIEW VistaMarketing AS
+SELECT company_name, phone, country, AVG(amount)
+FROM company
+JOIN transaction
+ON company.id = transaction.company_id
+GROUP BY company_id
+ORDER BY AVG(amount) DESC;
+
+-- View the view
+SELECT * FROM VistaMarketing;
+
 -- Level 2 Exercise 3
 /* Filter the VistaMarketing view to show only companies that have their country of 
 residence in "Germany" */
