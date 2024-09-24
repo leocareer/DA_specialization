@@ -5,17 +5,6 @@ relationship with the other two tables ("transaction" and "company"). After crea
 you will need to enter the information from the document called "data_introduir_credit". 
 Remember to show the diagram and make a brief description of it. */
 
--- View all indexed columns
-SELECT *
-FROM information_schema.statistics
-WHERE TABLE_SCHEMA = 'transactions';
-
--- Сreating an index
-CREATE INDEX idx_credit_card_id ON transaction(credit_card_id);
-
--- Сheck that the index has been created
-SHOW INDEX FROM transaction;
-
 -- Creating a table
 CREATE TABLE credit_card (
     id VARCHAR(10) NOT NULL,
@@ -24,9 +13,11 @@ CREATE TABLE credit_card (
     pin VARBINARY(64) NOT NULL,
     cvv VARBINARY(64) NOT NULL,
     expiring_date DATE NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES transaction(credit_card_id)
+    PRIMARY KEY (id)
 );
+
+-- View the table
+SELECT * FROM transactions.credit_card;
 
 -- Setting up a secret key to encrypt data
 SET @encryption_key = UNHEX('5f7972d647ab04a55ea4daa7c314bdbf');
@@ -50,6 +41,22 @@ SELECT
     CAST(cvv AS CHAR(3)) AS cvv, 
     expiring_date
 FROM credit_card;
+
+-- View all indexed columns
+SELECT *
+FROM information_schema.statistics
+WHERE TABLE_SCHEMA = 'transactions';
+
+-- Сreating an index
+CREATE INDEX idx_credit_card_id ON transaction(credit_card_id);
+
+-- Сheck that the index has been created
+SHOW INDEX FROM transaction;
+
+-- Сreating a foreign key
+ALTER TABLE transaction
+ADD CONSTRAINT fk_credit_card
+FOREIGN KEY (credit_card_id) REFERENCES credit_card(id);
 
 -- Level 1 Exercise 2
 /* The Human Resources department has identified an error in the account number of the user 
