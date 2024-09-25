@@ -226,14 +226,14 @@ the following information:
 Display the results of the view, sort the results in descending order based on
 the transaction ID variable. */
 
+-- Сreating a view
+CREATE VIEW TechnicalReport AS
+SELECT tr.id 'Transaction ID', us.name 'User Name', us.surname 'User Surname', cr.iban 'IBAN', 
+co.company_name 'Company'
+FROM transaction AS tr
+JOIN data_user AS us ON us.id = tr.user_id
+JOIN credit_card AS cr ON cr.id = tr.credit_card_id
+JOIN company AS co ON co.id = tr.company_id;
 
-
-
-
-
-
-
-
-
-
-
+-- View the view
+SELECT * FROM TechnicalReport;
