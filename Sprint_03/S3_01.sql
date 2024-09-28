@@ -165,7 +165,7 @@ company. Presents the created view, sorting the data from highest to lowest purc
 
 -- Сreating a view
 CREATE VIEW VistaMarketing AS
-SELECT company_name, phone, country, AVG(amount)
+SELECT company_name 'Company_Name', phone 'Contact_Phone', country 'Country_of_Residence', ROUND(AVG(amount),2) 'Average_Sales'
 FROM company
 JOIN transaction
 ON company.id = transaction.company_id
@@ -180,7 +180,7 @@ SELECT * FROM VistaMarketing;
 residence in "Germany" */
 
 SELECT * FROM VistaMarketing
-WHERE country = 'Germany';
+WHERE Country_of_Residence = 'Germany';
 
 -- Level 3 Exercise 1
 /* Next week you will have another meeting with the marketing managers. A colleague on your team 
