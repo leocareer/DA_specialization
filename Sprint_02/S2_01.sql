@@ -57,7 +57,7 @@ WHERE id IN (
 	SELECT company_id 
     FROM transaction
 	WHERE amount > (
-		SELECT AVG(amount) AS comp_amount FROM transaction
+		SELECT AVG(amount) FROM transaction
 	)
 )
 ORDER BY company_name;
@@ -67,7 +67,9 @@ ORDER BY company_name;
 SELECT company_name 'Companies'
 FROM company
 WHERE NOT EXISTS (
-	SELECT company_id FROM transaction
+	SELECT company_id 
+    FROM transaction
+    WHERE transaction.company_id = company_id
 );
 
 -- Level 2 Exercise 1
