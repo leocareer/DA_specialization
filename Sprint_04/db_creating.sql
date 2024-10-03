@@ -70,3 +70,11 @@ CREATE TABLE transaction_items (
     FOREIGN KEY (transaction_id) REFERENCES transactions(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
+
+-- Loading data from CSV
+LOAD DATA INFILE '/tmp/companies.csv'
+INTO TABLE companies
+FIELDS TERMINATED BY ',' 
+IGNORE 1 LINES;
+
+SHOW VARIABLES LIKE 'secure_file_priv';
