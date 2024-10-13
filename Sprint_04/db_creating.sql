@@ -63,10 +63,10 @@ CREATE TABLE transactions (
 );
 
 CREATE TABLE transaction_items (
-    item_id INT AUTO_INCREMENT PRIMARY KEY,
+   -- item_id INT AUTO_INCREMENT PRIMARY KEY,
     transaction_id VARCHAR(255),
     product_id INT,
-    quantity INT,
+   -- quantity INT,
     FOREIGN KEY (transaction_id) REFERENCES transactions(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
@@ -171,3 +171,35 @@ SET
     user_id = TRIM(@user_id),
     lat = TRIM(@lat),
     longitude = TRIM(@longitude);
+
+-- Вставляем первый продукт
+INSERT INTO transaction_items (transaction_id, product_id)
+SELECT id, CAST(SUBSTRING_INDEX(product_ids, ',', 1) AS UNSIGNED)
+FROM transactions
+WHERE product_ids IS NOT NULL;
+
+-- Вставляем второй продукт, если он существует
+INSERT INTO transaction_items (transaction_id, product_id)
+SELECT id, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(product_ids, ',', 2), ',', -1) AS UNSIGNED)
+FROM transactions
+WHERE CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= 1;
+
+INSERT INTO transaction_items (transaction_id, product_id)
+SELECT id, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(product_ids, ',', 3), ',', -1) AS UNSIGNED)
+FROM transactions
+WHERE CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= 2;
+
+INSERT INTO transaction_items (transaction_id, product_id)
+SELECT id, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(product_ids, ',', 4), ',', -1) AS UNSIGNED)
+FROM transactions
+WHERE CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= 3;
+
+INSERT INTO transaction_items (transaction_id, product_id)
+SELECT id, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(product_ids, ',', 5), ',', -1) AS UNSIGNED)
+FROM transactions
+WHERE CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= 4;
+
+SELECT transaction_id, product_id, COUNT(*)
+FROM transaction_items
+GROUP BY transaction_id, product_id
+HAVING COUNT(*) > 1;
