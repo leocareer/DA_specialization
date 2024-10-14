@@ -63,10 +63,8 @@ CREATE TABLE transactions (
 );
 
 CREATE TABLE transaction_items (
-   -- item_id INT AUTO_INCREMENT PRIMARY KEY,
     transaction_id VARCHAR(255),
     product_id INT,
-   -- quantity INT,
     FOREIGN KEY (transaction_id) REFERENCES transactions(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
@@ -172,34 +170,38 @@ SET
     lat = TRIM(@lat),
     longitude = TRIM(@longitude);
 
--- Вставляем первый продукт
+-- Insert the first product
 INSERT INTO transaction_items (transaction_id, product_id)
 SELECT id, CAST(SUBSTRING_INDEX(product_ids, ',', 1) AS UNSIGNED)
 FROM transactions
 WHERE product_ids IS NOT NULL;
 
--- Вставляем второй продукт, если он существует
+-- Insert the second product if it exists
 INSERT INTO transaction_items (transaction_id, product_id)
 SELECT id, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(product_ids, ',', 2), ',', -1) AS UNSIGNED)
 FROM transactions
 WHERE CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= 1;
 
+-- Insert the third product if it exists
 INSERT INTO transaction_items (transaction_id, product_id)
 SELECT id, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(product_ids, ',', 3), ',', -1) AS UNSIGNED)
 FROM transactions
 WHERE CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= 2;
 
+-- Insert the fourth product if it exists
 INSERT INTO transaction_items (transaction_id, product_id)
 SELECT id, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(product_ids, ',', 4), ',', -1) AS UNSIGNED)
 FROM transactions
 WHERE CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= 3;
 
+-- Сheck that the fifth product does not exist
 INSERT INTO transaction_items (transaction_id, product_id)
 SELECT id, CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(product_ids, ',', 5), ',', -1) AS UNSIGNED)
 FROM transactions
 WHERE CHAR_LENGTH(product_ids) - CHAR_LENGTH(REPLACE(product_ids, ',', '')) >= 4;
 
+-- Сheck that there are no duplicates
 SELECT transaction_id, product_id, COUNT(*)
 FROM transaction_items
 GROUP BY transaction_id, product_id
-HAVING COUNT(*) > 1;
+HAVING COUNT(*) > 1
