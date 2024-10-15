@@ -81,14 +81,14 @@ FIELDS TERMINATED BY ','
 IGNORE 1 LINES
 (@id, @user_id, @iban, @pan, @pin, @cvv, @track1, @track2, @expiring_date)
 SET 
-	id = TRIM(@id), 
-    user_id = TRIM(@user_id),
-    iban = TRIM(@iban),
-    pan = TRIM(@pan),
-    pin = TRIM(@pin),
-    cvv = TRIM(@cvv),
-    track1 = TRIM(@track1),
-    track2 = TRIM(@track2),
+	id = @id, 
+    user_id = @user_id,
+    iban = @iban,
+    pan = @pan,
+    pin = @pin,
+    cvv = @cvv,
+    track1 = @track1,
+    track2 = @track2,
     expiring_date = STR_TO_DATE(@expiring_date, '%m/%d/%y');
 
 LOAD DATA INFILE '/tmp/products.csv'
@@ -169,6 +169,11 @@ SET
     user_id = TRIM(@user_id),
     lat = TRIM(@lat),
     longitude = TRIM(@longitude);
+    
+LOAD DATA INFILE '/tmp/transactions.csv'
+INTO TABLE transactions
+FIELDS TERMINATED BY ';' 
+IGNORE 1 LINES;
 
 -- Insert the first product
 INSERT INTO transaction_items (transaction_id, product_id)

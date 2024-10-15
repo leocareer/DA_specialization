@@ -1,11 +1,10 @@
 -- Level 1 Exercise 1
 -- Perform a subquery that displays all users with more than 30 transactions using at least 2 tables.
-SELECT *
+SELECT name, surname
 FROM users
 WHERE id IN (
     SELECT user_id
     FROM transactions
-    WHERE declined = 1
     GROUP BY user_id
     HAVING COUNT(id) > 30
 );
@@ -36,7 +35,7 @@ INSERT INTO card_status (card_id, activity)
 SELECT
     t1.card_id,
     CASE
-        WHEN COUNT(t1.id) >= 3 AND SUM(t1.declined) = 0 THEN 0
+        WHEN COUNT(t1.id) >= 3 AND SUM(t1.declined) = 3 THEN 0
         ELSE 1
     END AS activity
 FROM (
@@ -46,18 +45,16 @@ FROM (
 ) t1
 GROUP BY t1.card_id;
 
-SELECT COUNT(activity)
+SELECT COUNT(activity) 'how many cards are active'
 FROM card_status
 WHERE activity = 1;
 
 -- Level 3 Exercise 1
 -- Create a table with which we can join the data from the new products.csv file with the created database, taking into account that from transaction you have product_ids. Generate the following query: we need to know the number of times each product has been sold.
-SELECT product_id, COUNT(product_id) 'how many times sold'
+SELECT product_id, COUNT(transaction_id) AS how_many_times_sold
 FROM transaction_items
-WHERE transaction_id IN (
-	SELECT transaction_id
-    FROM transactions
-    WHERE declined = 1
-    )
+JOIN transactions ON transaction_items.transaction_id = transactions.id
+JOIN products ON products.id = transaction_items.product_id
+WHERE declined = 0
 GROUP BY product_id
-ORDER BY product_id;
+ORDER BY how_many_times_sold DESC;
