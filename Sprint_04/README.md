@@ -1,0 +1,7 @@
+- `/db_data:` .csv data files
+- `S4_01.sql:` all the queries for the exercises
+- `Sprint_4.pdf:` descriptions with screenshots of all queries and their results with comments
+- `db_creating.sql:` all the queries for creating a database and loading data
+- `diagram_drawed_datatypes.pdf:` full diagram after modeling and before creating the database
+- `diagram_drawed_keys.pdf:` simpler diagram without data types after modeling and before creating the database only
+- `diagram_workbench.pdf:` full diagram after database creation
