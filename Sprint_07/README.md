@@ -1,0 +1,6 @@
+- `l1e3_text.txt` contains the text to run 'Level 1 Exercise 3. Word count of a text'
+- `l1e4_dictionary.json` contains the dictionary to run 'Level 1 Exercise 4. Reverse dictionary'
+- `l2e1_dictionary.json` contains the dictionary to run 'Level 2 Exercise 1. Reverse dictionary with duplicates'
+- `l3e1_output.png` image contains output for 'Level 3 Exercise 1. Word counter and straightener of a text'
+- `l3e1_text.txt` contains the text to run 'Level 3 Exercise 1. Word counter and straightener of a text'
+- `S7_01.ipynb` descriptions of exercises and implementations and program code that performs all exercises
