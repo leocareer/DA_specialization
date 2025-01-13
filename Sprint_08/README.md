@@ -1,0 +1,4 @@
+- `S8_01.ipynb` contains all exercises, solutions and result interpretations for task 'S8.01. Visualizations in Python'
+- `S8_02.ipynb` contains each scenario corresponding to each Power BI report visual for the 'S8.02. Power BI with Python' task
+- `S8_02.pbix` the Power BI report for the 'S8.02. Power BI with Python' task
+- `S8_02.pdf` the exported Power BI report for task 'S8.02. Power BI with Python'
