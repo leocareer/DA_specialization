@@ -1,20 +1,9 @@
-final production of renewable and non-renewable energy\
-`Producción_de_energía_eléctrica.csv`
-
-final consumption of renewable and non-renewable energy\
-`Consumo_final_de_energía_por_tipo.csv`
-
-primary production and consumption of renewable and non-renewable energy\
-`SERIE-BALANC-1990-2022-web.xlsx`
-
-CO2, CH4, N2O emissions\
-`Emissions_de_GEH_a_Catalunya_20250127.csv`
-
-number of people employed in industry\
-`Población_ocupada_por_sectores_de_actividad_y_sexo.csv`
-
-consumer price index\
-`Índex_de_preus_de_consum.csv`
-
-industrial price index\
-`Índex_de_preus_industrials.csv`
+- `/data:` source data files
+  - `Emissions_de_GEH_a_Catalunya_20250127.csv:` annual data on GHG emissions according to the IPCC methodology from 1990 to 2022
+  - `SERIE-BALANC-1990-2022-web.xlsx:` energy balance of Catalonia  from 1990 to 2022
+  
+- `S10_EDA.ipynb:` Jupiter notebook containing exploratory data analysis
+- `S10_Dashboard.pbix:` Power BI dashboard with charts for presentation
+- `S10_Dashboard.pdf:` Power BI dashboard as .pdf
+- `S10_Presentation.pdf:` presentation to present the stady
+- `S10_Report.pdf:` scientific article
